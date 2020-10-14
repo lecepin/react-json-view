@@ -30,11 +30,15 @@ export default class extends React.PureComponent {
         const container = document.createElement('textarea');
         const { clickCallback, src, namespace } = this.props;
 
-        container.innerHTML = JSON.stringify(
-            this.clipboardValue(src),
-            null,
-            '  '
-        );
+        if (Object.prototype.toString.call(src) == "[object String]") {
+            container.innerHTML = src;
+        } else {
+            container.innerHTML = JSON.stringify(
+                this.clipboardValue(src),
+                null,
+                '  '
+            );
+        }
 
         document.body.appendChild(container);
         container.select();

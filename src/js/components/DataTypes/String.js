@@ -39,16 +39,17 @@ export default class extends React.PureComponent {
         const { collapsed } = this.state;
         const { props } = this;
         const { collapseStringsAfterLength, theme } = props;
-        let { value } = props;
+        const { value } = props;
         let collapsible = toType(collapseStringsAfterLength) === 'integer';
         let style = { style: { cursor: 'default' } };
+        let _value = value;
 
-        if (collapsible && value.length > collapseStringsAfterLength) {
+        if (collapsible && _value.length > collapseStringsAfterLength) {
             style.style.cursor = 'pointer';
             if (this.state.collapsed) {
-                value = (
+                _value = (
                     <span>
-                        {value.substring(0, collapseStringsAfterLength)}
+                        {_value.substring(0, collapseStringsAfterLength)}
                         <span {...Theme(theme, 'ellipsis')}> ...</span>
                     </span>
                 );
@@ -63,7 +64,7 @@ export default class extends React.PureComponent {
                     {...style}
                     onClick={this.toggleCollapsed}
                 >
-                    "{value}"
+                    "{ /^(https?:\/\/)([0-9a-z.]+)(:[0-9]+)?([/0-9a-z.]+)?(\?[0-9a-z&=]+)?(#[0-9-a-z]+)?/i.test(value) ? <a target="_blank" href={value}>{_value}</a> : _value }"
                 </span>
             </div>
         );
