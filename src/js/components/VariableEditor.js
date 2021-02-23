@@ -51,6 +51,7 @@ class VariableEditor extends React.PureComponent {
             namespace,
             indentWidth,
             enableClipboard,
+            enableClipboardPath,
             onEdit,
             onDelete,
             onSelect,
@@ -118,6 +119,15 @@ class VariableEditor extends React.PureComponent {
                     <CopyToClipboard
                         hidden={editMode}
                         src={variable.value}
+                        clickCallback={enableClipboard}
+                        {...{ theme, namespace }}
+                    />
+                ) : null}
+                {enableClipboardPath ? (
+                    <CopyToClipboard
+                        type="path"
+                        hidden={editMode}
+                        src={Array.isArray(namespace) ? (namespace[0] == null ? namespace.join('').substr(1) : namespace.join('')) : namespace}
                         clickCallback={enableClipboard}
                         {...{ theme, namespace }}
                     />

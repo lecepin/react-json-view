@@ -107,6 +107,7 @@ export default class extends React.PureComponent {
             onDelete,
             onAdd,
             enableClipboard,
+            enableClipboardPath,
             src,
             namespace
         } = this.props;
@@ -127,6 +128,14 @@ export default class extends React.PureComponent {
                         {...{src, theme, namespace}} />)
                     : null
                 }
+                {enableClipboardPath ? (
+                    <CopyToClipboard
+                        type="path"
+                        src={!namespace[0] ? namespace.join('').substr(1) : namespace.join('')}
+                        clickCallback={enableClipboard}
+                        {...{ theme, namespace }}
+                    />
+                ) : null}
                 {/* copy add/remove icons */}
                 {onAdd !== false ? this.getAddAttribute() : null}
                 {onDelete !== false ? this.getRemoveObject() : null}

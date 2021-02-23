@@ -237,6 +237,8 @@ class RjvObject extends React.PureComponent {
         let elements = [],
             variable;
         let keys = Object.keys(variables || {});
+        let variablesIsArray = Array.isArray(variables);
+
         if (this.props.sortKeys) {
             keys = keys.sort();
         }
@@ -246,6 +248,7 @@ class RjvObject extends React.PureComponent {
             if (parent_type === 'array_group' && index_offset) {
                 variable.name = parseInt(variable.name) + index_offset;
             }
+            
             if (!variables.hasOwnProperty(name)) {
                 return;
             } else if (variable.type === 'object') {
@@ -255,7 +258,7 @@ class RjvObject extends React.PureComponent {
                         depth={depth + DEPTH_INCREMENT}
                         name={variable.name}
                         src={variable.value}
-                        namespace={namespace.concat(variable.name)}
+                        namespace={namespace.concat(variablesIsArray ? `[${variable.name}]` : `.${variable.name}` )}
                         parent_type={object_type}
                         {...props}
                     />
@@ -276,7 +279,7 @@ class RjvObject extends React.PureComponent {
                         depth={depth + DEPTH_INCREMENT}
                         name={variable.name}
                         src={variable.value}
-                        namespace={namespace.concat(variable.name)}
+                        namespace={namespace.concat(variablesIsArray ? `[${variable.name}]` : `.${variable.name}` )}
                         type="array"
                         parent_type={object_type}
                         {...props}
@@ -288,7 +291,7 @@ class RjvObject extends React.PureComponent {
                         key={variable.name + '_' + namespace}
                         variable={variable}
                         singleIndent={SINGLE_INDENT}
-                        namespace={namespace}
+                        namespace={namespace.concat('.', variable.name)}
                         type={this.props.type}
                         {...props}
                     />

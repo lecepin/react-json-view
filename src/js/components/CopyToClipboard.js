@@ -4,7 +4,7 @@ import { toType } from './../helpers/util';
 import stringifyVariable from './../helpers/stringifyVariable';
 
 //clibboard icon
-import { Clippy } from './icons';
+import { Clippy, ClippyPath } from './icons';
 
 //theme
 import Theme from './../themes/getStyle';
@@ -65,19 +65,19 @@ export default class extends React.PureComponent {
         });
     }
 
-    getClippyIcon = () => {
+    getClippyIcon = (type) => {
         const { theme } = this.props;
 
         if (this.state.copied) {
             return (
                 <span>
-                    <Clippy class="copy-icon" {...Theme(theme, 'copy-icon')} />
+                    { type != 'path' ? <Clippy class="copy-icon" {...Theme(theme, 'copy-icon')} /> : <ClippyPath class="copy-icon" {...Theme(theme, 'copy-icon')} /> }
                     <span {...Theme(theme, 'copy-icon-copied')}>✔</span>
                 </span>
             );
         }
 
-        return <Clippy class="copy-icon" {...Theme(theme, 'copy-icon')} />;
+        return type != 'path' ? <Clippy class="copy-icon" {...Theme(theme, 'copy-icon')} /> : <ClippyPath class="copy-icon" {...Theme(theme, 'copy-icon')} />;
     }
 
     clipboardValue = value => {
@@ -92,7 +92,7 @@ export default class extends React.PureComponent {
     }
 
     render() {
-        const { src, theme, hidden } = this.props;
+        const { src, theme, hidden, type } = this.props;
         let style = Theme(theme, 'copy-to-clipboard').style;
         let display = 'inline';
 
@@ -101,7 +101,7 @@ export default class extends React.PureComponent {
         }
 
         return (
-            <span class="copy-to-clipboard-container" title="Copy to clipboard">
+            <span class="copy-to-clipboard-container" title={ type == 'path' ? "复制路径" : "复制值"}>
                 <span
                     style={{
                         ...style,
@@ -109,7 +109,7 @@ export default class extends React.PureComponent {
                     }}
                     onClick={this.handleCopy}
                 >
-                    {this.getClippyIcon()}
+                    {this.getClippyIcon(type)}
                 </span>
             </span>
         );
