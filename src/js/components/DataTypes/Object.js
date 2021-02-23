@@ -243,7 +243,7 @@ class RjvObject extends React.PureComponent {
             keys = keys.sort();
         }
         keys.forEach(name => {
-            variable = new JsonVariable(name, variables[name]);
+            variable = new JsonVariable(name, variables[name], variablesIsArray);
 
             if (parent_type === 'array_group' && index_offset) {
                 variable.name = parseInt(variable.name) + index_offset;
@@ -291,7 +291,7 @@ class RjvObject extends React.PureComponent {
                         key={variable.name + '_' + namespace}
                         variable={variable}
                         singleIndent={SINGLE_INDENT}
-                        namespace={namespace.concat('.', variable.name)}
+                        namespace={namespace.concat(variable.isArray ? '' : '.', variable.isArray ? `[${variable.name}]` : variable.name)}
                         type={this.props.type}
                         {...props}
                     />
@@ -304,10 +304,11 @@ class RjvObject extends React.PureComponent {
 
 //just store name, value and type with a variable
 class JsonVariable {
-    constructor(name, value) {
+    constructor(name, value, isArray) {
         this.name = name;
         this.value = value;
         this.type = toType(value);
+        this.isArray = isArray;
     }
 }
 

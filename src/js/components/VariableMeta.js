@@ -128,7 +128,7 @@ export default class extends React.PureComponent {
                         {...{src, theme, namespace}} />)
                     : null
                 }
-                {enableClipboardPath ? (
+                {namespace.length > 1 && enableClipboardPath ? (
                     <CopyToClipboard
                         type="path"
                         src={!namespace[0] ? namespace.join('').substr(1) : namespace.join('')}
